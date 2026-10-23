@@ -2,7 +2,7 @@
 
 **中文** | [English](README.en.md)
 
-一个给 AI 编码助手用的技能（Skill）：让它动手之前先按专业从业者的方式想一遍——**正规做法是什么、当前场景该跟哪一边、我和它差在哪**——再决定怎么做。
+一个 DSH 插件包（bundle），内含同名技能：让 AI 编码助手动手之前先按专业从业者的方式想一遍——**正规做法是什么、当前场景该跟哪一边、我和它差在哪**——再决定怎么做。
 
 ## 它解决什么问题
 
@@ -36,31 +36,35 @@ AI 助手最容易出的问题，往往不是「不会写」，而是「不看�
 
 ## 怎么装
 
-把 `SKILL.md` 和 `references/` 一起放进运行时的技能目录：
+**方式一：作为 DSH 插件包安装（推荐）**
 
-| 运行时 | 技能目录 |
-|---|---|
-| DSH（DeepSeek Harness） | `~/.dsh/skills/`（跨运行时别名 `~/.agents/skills/`） |
+`package.json` 里声明了 `dsh.bundle.patch`，安装后自动挂载 `index.js`，把自带的 `skills/` 注册进 dsh 的技能目录，不需要手动复制：
+
+```bash
+dsh plugin --profile <你的 profile 名> add dsh-pro-standards
+```
+
+也可以在 DSH 的插件管理界面里安装。装好后技能列表里会出现 `dsh-pro-standards`，插件详情里能看到标题、描述和图标。
+
+**方式二：只复制技能（不装插件）**
+
+效果一样能用，只是没有插件清单和图标：
 
 ```bash
 git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 mkdir -p ~/.dsh/skills/dsh-pro-standards
-cp -r dsh-pro-standards/SKILL.md dsh-pro-standards/references ~/.dsh/skills/dsh-pro-standards/
+cp -r dsh-pro-standards/skills/dsh-pro-standards/. ~/.dsh/skills/dsh-pro-standards/
 ```
 
 ```powershell
 git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 New-Item -ItemType Directory -Force "$HOME\.dsh\skills\dsh-pro-standards" | Out-Null
-Copy-Item -Recurse .\dsh-pro-standards\SKILL.md, .\dsh-pro-standards\references "$HOME\.dsh\skills\dsh-pro-standards"
+Copy-Item -Recurse .\dsh-pro-standards\skills\dsh-pro-standards\* "$HOME\.dsh\skills\dsh-pro-standards"
 ```
 
-也可以从 npm 取文件（这一步只拿到文件，仍需放进技能目录）：
-
-```bash
-npm install dsh-pro-standards
-mkdir -p ~/.dsh/skills/dsh-pro-standards
-cp -r node_modules/dsh-pro-standards/SKILL.md node_modules/dsh-pro-standards/references ~/.dsh/skills/dsh-pro-standards/
-```
+| 运行时 | 技能目录 |
+|---|---|
+| DSH（DeepSeek Harness） | `~/.dsh/skills/`（跨运行时别名 `~/.agents/skills/`） |
 
 建议目录名与 `SKILL.md` 里的 `name` 字段保持一致（`dsh-pro-standards`）：运行时是按 frontmatter 的 `name` 识别技能的，目录同名只是方便对照、不容易弄错。
 
@@ -80,17 +84,31 @@ cp -r node_modules/dsh-pro-standards/SKILL.md node_modules/dsh-pro-standards/ref
 > 正规做法是：用包管理器装，比如 `npm i -g <pkg>`，或者项目内 `pnpm add -D <pkg>`。
 > 要按正规的来吗？（你坚持原样也 OK）
 
+## 它怎么接进 DSH
+
+`cordis.patch.yml` 插入一行插件，挂载 `index.js`。`index.js` 在 `apply` 时读取 `skills/` 下每个 `SKILL.md`，用 `skills` 服务**公开的** `register()` 接口注册成运行时技能，并把技能目录作为 `resourceBase`——所以 `references/` 里的相对引用能正常解析。
+
+正文在插件挂载时读入一次，升级后重新挂载即刷新。整个插件不依赖任何 dsh 内部包，只用到 `skills` 这一项公开服务。
+
 ## 目录结构
 
 ```
 dsh-pro-standards/
-├── SKILL.md                 # 主文件：总原则 + 三步判断 + 提醒模板
-├── references/
-│   └── standards.md         # 按需细则：判断细则、示例、反例
+├── index.js                 # 插件入口：把 skills/ 注册进 dsh 技能目录
+├── cordis.patch.yml         # bundle 补丁：安装后挂载 index.js
+├── skills/
+│   └── dsh-pro-standards/
+│       ├── SKILL.md         # 技能主文件：总原则 + 三步判断 + 提醒模板
+│       └── references/
+│           └── standards.md # 按需细则：判断细则、示例、反例
+├── locale/
+│   ├── zh.json              # 插件标题与描述（中文）
+│   └── en.json              # 插件标题与描述（英文）
+├── icon.svg                 # 插件图标
+├── package.json             # npm / dsh bundle 清单
 ├── README.md                # 中文说明（本文件）
 ├── README.en.md             # English README
 ├── CHANGELOG.md             # 版本变更记录
-├── package.json             # npm 包配置
 ├── LICENSE                  # MIT
 ├── .gitignore               # 忽略 backups/ 等本地文件
 └── .gitattributes           # 统一 LF 换行

@@ -1,0 +1,23 @@
+# dsh-pro-standards 的 Cordis bundle 补丁。
+#
+# 通过 dsh 自己的插件命令安装本包时会自动应用，例如：
+#
+#   dsh plugin --profile <profile> add dsh-pro-standards
+#   dsh plugin --profile <profile> add link:/path/to/this-package
+#
+# dsh CLI 会把每个声明了 `dsh.bundle` 的依赖（见 package.json）追加到 profile 的
+# `dsh.profile.bundles`，每个 bundle 的补丁在启动时按层叠加。这里不修改用户的配置：
+# 安装产物就是配置本身。
+#
+# 这一行挂载 index.js，它把本包自带的 `skills/` 目录交给 dsh 自己的
+# `@deepseek-ai/dsh-skill-filesystem` 提供者（私有实例，bundledSkillDir），
+# 于是技能用 dsh 原生的 `skill` 工具加载。
+
+- insert:
+    - id: dsh-pro-standards
+      name: 'dsh-pro-standards'
+      config:
+        # 技能根目录。空 = 自动解析：config → DSH_PRO_STANDARDS_SKILLS_DIR → <包>/skills。
+        skillsDir: ""
+        # 注册到 ctx.skills 上的技能提供者名。
+        providerName: "dsh-pro-standards"

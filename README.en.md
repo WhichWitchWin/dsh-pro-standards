@@ -2,7 +2,7 @@
 
 [中文](README.md) | **English**
 
-A skill for AI coding agents: before touching a project, think the way a competent practitioner does — **what is the proper way to do this, should this situation follow the official rule or the industry norm, and where does my plan differ** — then act.
+A DSH bundle that ships a skill of the same name: before touching a project, an AI coding agent thinks the way a competent practitioner does — **what is the proper way to do this, should this situation follow the official rule or the industry norm, and where does my plan differ** — then acts.
 
 ## The problem it solves
 
@@ -36,31 +36,35 @@ When genuinely unsure, the skill asks you rather than guessing.
 
 ## Install
 
-Put `SKILL.md` and `references/` together into your runtime's skills directory:
+**Option 1: install it as a DSH bundle (recommended)**
 
-| Runtime | Skills directory |
-|---|---|
-| DSH (DeepSeek Harness) | `~/.dsh/skills/` (cross-runtime alias `~/.agents/skills/`) |
+`package.json` declares `dsh.bundle.patch`, so installing it mounts `index.js`, which registers the bundled `skills/` tree into dsh's skill catalog. No manual copying:
+
+```bash
+dsh plugin --profile <your profile> add dsh-pro-standards
+```
+
+It can also be installed from the DSH plugin manager UI. Afterwards `dsh-pro-standards` shows up in the skill list, with its title, description and icon visible in the plugin details.
+
+**Option 2: copy only the skill (no plugin)**
+
+Same skill, no plugin manifest or icon:
 
 ```bash
 git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 mkdir -p ~/.dsh/skills/dsh-pro-standards
-cp -r dsh-pro-standards/SKILL.md dsh-pro-standards/references ~/.dsh/skills/dsh-pro-standards/
+cp -r dsh-pro-standards/skills/dsh-pro-standards/. ~/.dsh/skills/dsh-pro-standards/
 ```
 
 ```powershell
 git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 New-Item -ItemType Directory -Force "$HOME\.dsh\skills\dsh-pro-standards" | Out-Null
-Copy-Item -Recurse .\dsh-pro-standards\SKILL.md, .\dsh-pro-standards\references "$HOME\.dsh\skills\dsh-pro-standards"
+Copy-Item -Recurse .\dsh-pro-standards\skills\dsh-pro-standards\* "$HOME\.dsh\skills\dsh-pro-standards"
 ```
 
-You can also fetch the files from npm (this only downloads them; they still have to go into the skills directory):
-
-```bash
-npm install dsh-pro-standards
-mkdir -p ~/.dsh/skills/dsh-pro-standards
-cp -r node_modules/dsh-pro-standards/SKILL.md node_modules/dsh-pro-standards/references ~/.dsh/skills/dsh-pro-standards/
-```
+| Runtime | Skills directory |
+|---|---|
+| DSH (DeepSeek Harness) | `~/.dsh/skills/` (cross-runtime alias `~/.agents/skills/`) |
 
 Keep the directory name the same as the `name` field in `SKILL.md` (`dsh-pro-standards`): the runtime identifies a skill by the frontmatter `name`, so a matching directory name merely keeps the two from drifting apart.
 
@@ -80,17 +84,31 @@ A typical exchange:
 > The proper way: install it with a package manager, e.g. `npm i -g <pkg>`, or `pnpm add -D <pkg>` inside the project.
 > Do it the proper way? (Your call — the original approach is fine too.)
 
+## How it plugs into DSH
+
+`cordis.patch.yml` inserts one plugin row that mounts `index.js`. During `apply`, it reads every `SKILL.md` under `skills/` and registers each one as a runtime skill through the **public** `register()` method of the `skills` service, using the skill directory as its `resourceBase` — so relative references such as `references/` resolve correctly.
+
+The body is read once when the plugin mounts; upgrading the package remounts it, picking up the new text. The plugin depends on no dsh-internal package, only on the public `skills` service.
+
 ## Repository layout
 
 ```
 dsh-pro-standards/
-├── SKILL.md                 # Main file: principles + three-step check + reminder template
-├── references/
-│   └── standards.md         # On-demand detail: rules, examples, counter-examples
+├── index.js                 # Plugin entry: registers skills/ into dsh
+├── cordis.patch.yml         # Bundle patch: mounts index.js on install
+├── skills/
+│   └── dsh-pro-standards/
+│       ├── SKILL.md         # Skill: principles + three-step check + reminder template
+│       └── references/
+│           └── standards.md # On-demand detail: rules, examples, counter-examples
+├── locale/
+│   ├── zh.json              # Plugin title and description (Chinese)
+│   └── en.json              # Plugin title and description (English)
+├── icon.svg                 # Plugin icon
+├── package.json             # npm / dsh bundle manifest
 ├── README.md                # 中文说明
 ├── README.en.md             # English README (this file)
 ├── CHANGELOG.md             # Release notes
-├── package.json             # npm package manifest
 ├── LICENSE                  # MIT
 ├── .gitignore               # Ignores backups/ and other local files
 └── .gitattributes           # Keeps line endings at LF

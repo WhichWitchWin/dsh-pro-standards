@@ -11,8 +11,13 @@
 - `README.md`（中文）与 `README.en.md`（English），两份互相跳转
 - `LICENSE`：MIT
 - `.gitignore`
-- `package.json`：npm 包发布配置
+- `package.json`：npm 包与 dsh bundle 清单
+- `index.js`：插件入口，把 `skills/` 注册进 dsh 技能目录
+- `cordis.patch.yml`：bundle 补丁，安装后自动挂载插件
+- `locale/zh.json`、`locale/en.json`：插件标题与描述
+- `icon.svg`：插件图标
 
 ### 变更
 
 - 技能名 `pro-standards` → `dsh-pro-standards`
+- 仓库形态由纯技能目录改为插件包：`SKILL.md` 与 `references/` 迁到 `skills/dsh-pro-standards/` 下

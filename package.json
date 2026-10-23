@@ -1,9 +1,34 @@
 {
   "name": "dsh-pro-standards",
   "version": "0.1.0",
-  "description": "专业规范守则：让 AI 编码助手动手前先做三步判断（找标准 → 看场景 → 查差距），在官方规范与行业惯例之间做情境化取舍。A DSH skill that makes AI coding agents reason like a competent practitioner.",
+  "description": "专业规范守则：让 AI 编码助手动手前先做三步判断（找标准 → 看场景 → 查差距），在官方规范与行业惯例之间做情境化取舍。A DSH bundle that makes AI coding agents reason like a competent practitioner.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "skills",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
   "keywords": [
     "dsh",
+    "dsh-plugin",
     "dsh-skill",
     "deepseek-harness",
     "agent-skills",
@@ -14,14 +39,6 @@
   ],
   "license": "MIT",
   "author": "dsh-pro-standards contributors",
-  "files": [
-    "SKILL.md",
-    "references/",
-    "README.md",
-    "README.en.md",
-    "CHANGELOG.md",
-    "LICENSE"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/WhichWitchWin/dsh-pro-standards.git"
