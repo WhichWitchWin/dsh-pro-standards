@@ -54,13 +54,13 @@ New-Item -ItemType Directory -Force "$HOME\.dsh\skills\dsh-pro-standards" | Out-
 Copy-Item -Recurse .\dsh-pro-standards\SKILL.md, .\dsh-pro-standards\references "$HOME\.dsh\skills\dsh-pro-standards"
 ```
 
-The directory name must match the `name` field in `SKILL.md` (`dsh-pro-standards`), otherwise it may not be loaded.
+Keep the directory name the same as the `name` field in `SKILL.md` (`dsh-pro-standards`): the runtime identifies a skill by the frontmatter `name`, so a matching directory name merely keeps the two from drifting apart.
 
 ## Usage
 
 Two ways to trigger it:
 
-- **Automatic**: if your persona or rules include a skill-routing clause (such as clause B8 in the DSH working constitution), tasks like development, dependency installation, file organisation and documentation load it automatically;
+- **Automatic**: if your agent rules include a routing clause that loads a matching skill for development, dependency installation, file organisation or documentation, it is loaded together with those rules;
 - **Manual**: just say it — "check this project with dsh-pro-standards" or "review this change against the standards".
 
 A typical exchange:
@@ -81,7 +81,10 @@ dsh-pro-standards/
 │   └── standards.md         # On-demand detail: rules, examples, counter-examples
 ├── README.md                # 中文说明
 ├── README.en.md             # English README (this file)
-└── LICENSE                  # MIT
+├── 更新说明.md              # Release notes
+├── LICENSE                  # MIT
+├── .gitignore               # Ignores backups/ and other local files
+└── .gitattributes           # Keeps line endings at LF
 ```
 
 `references/standards.md` covers seven modules — dependency installation, API usage, code style, file layout, open-source workflow, documentation, versioning and release — plus a general judgement framework and extra reminder wording.

@@ -54,13 +54,13 @@ New-Item -ItemType Directory -Force "$HOME\.dsh\skills\dsh-pro-standards" | Out-
 Copy-Item -Recurse .\dsh-pro-standards\SKILL.md, .\dsh-pro-standards\references "$HOME\.dsh\skills\dsh-pro-standards"
 ```
 
-目录名要和 `SKILL.md` 里的 `name` 字段一致（`dsh-pro-standards`），否则可能加载不到。
+建议目录名与 `SKILL.md` 里的 `name` 字段保持一致（`dsh-pro-standards`）：运行时是按 frontmatter 的 `name` 识别技能的，目录同名只是方便对照、不容易弄错。
 
 ## 怎么用
 
 两种触发方式：
 
-- **自动**：如果人设/宪法里配了「技能路由」规则（例如 DSH 工作准则里的 B8 条款），开发、装依赖、组织文件、写文档这类任务会自动加载它；
+- **自动**：如果你的 agent 规则里配了「技能路由」条款（命中开发、装依赖、组织文件、写文档这类任务时先加载匹配的技能），它会随规则一起被加载；
 - **手动**：直接说——「用 dsh-pro-standards 检查一下这个项目」「按规范看看这次改动」。
 
 一次典型的对话：
@@ -81,7 +81,10 @@ dsh-pro-standards/
 │   └── standards.md         # 按需细则：判断细则、示例、反例
 ├── README.md                # 中文说明（本文件）
 ├── README.en.md             # English README
-└── LICENSE                  # MIT
+├── 更新说明.md              # 版本变更记录
+├── LICENSE                  # MIT
+├── .gitignore               # 忽略 backups/ 等本地文件
+└── .gitattributes           # 统一 LF 换行
 ```
 
 `references/standards.md` 覆盖 7 个模块——依赖安装、接口调用、代码规范、文件结构、开源流程、文档规范、版本与发布——外加一个通用判断框架和提醒话术补充。
