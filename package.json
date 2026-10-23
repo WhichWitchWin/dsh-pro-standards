@@ -1,0 +1,36 @@
+{
+  "name": "dsh-pro-standards",
+  "version": "0.1.0",
+  "description": "专业规范守则：让 AI 编码助手动手前先做三步判断（找标准 → 看场景 → 查差距），在官方规范与行业惯例之间做情境化取舍。A DSH skill that makes AI coding agents reason like a competent practitioner.",
+  "keywords": [
+    "dsh",
+    "dsh-skill",
+    "deepseek-harness",
+    "agent-skills",
+    "skills",
+    "coding-standards",
+    "conventions",
+    "code-review"
+  ],
+  "license": "MIT",
+  "author": "dsh-pro-standards contributors",
+  "files": [
+    "SKILL.md",
+    "references/",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WhichWitchWin/dsh-pro-standards.git"
+  },
+  "homepage": "https://github.com/WhichWitchWin/dsh-pro-standards#readme",
+  "bugs": {
+    "url": "https://github.com/WhichWitchWin/dsh-pro-standards/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -11,6 +11,7 @@
 - `README.md`（中文）与 `README.en.md`（English），两份互相跳转
 - `LICENSE`：MIT
 - `.gitignore`
+- `package.json`：npm 包发布配置
 
 ### 变更
 

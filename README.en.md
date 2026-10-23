@@ -43,15 +43,23 @@ Put `SKILL.md` and `references/` together into your runtime's skills directory:
 | DSH (DeepSeek Harness) | `~/.dsh/skills/` (cross-runtime alias `~/.agents/skills/`) |
 
 ```bash
-git clone https://github.com/your-username/dsh-pro-standards.git
+git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 mkdir -p ~/.dsh/skills/dsh-pro-standards
 cp -r dsh-pro-standards/SKILL.md dsh-pro-standards/references ~/.dsh/skills/dsh-pro-standards/
 ```
 
 ```powershell
-git clone https://github.com/your-username/dsh-pro-standards.git
+git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 New-Item -ItemType Directory -Force "$HOME\.dsh\skills\dsh-pro-standards" | Out-Null
 Copy-Item -Recurse .\dsh-pro-standards\SKILL.md, .\dsh-pro-standards\references "$HOME\.dsh\skills\dsh-pro-standards"
+```
+
+You can also fetch the files from npm (this only downloads them; they still have to go into the skills directory):
+
+```bash
+npm install dsh-pro-standards
+mkdir -p ~/.dsh/skills/dsh-pro-standards
+cp -r node_modules/dsh-pro-standards/SKILL.md node_modules/dsh-pro-standards/references ~/.dsh/skills/dsh-pro-standards/
 ```
 
 Keep the directory name the same as the `name` field in `SKILL.md` (`dsh-pro-standards`): the runtime identifies a skill by the frontmatter `name`, so a matching directory name merely keeps the two from drifting apart.
@@ -82,6 +90,7 @@ dsh-pro-standards/
 ├── README.md                # 中文说明
 ├── README.en.md             # English README (this file)
 ├── CHANGELOG.md             # Release notes
+├── package.json             # npm package manifest
 ├── LICENSE                  # MIT
 ├── .gitignore               # Ignores backups/ and other local files
 └── .gitattributes           # Keeps line endings at LF

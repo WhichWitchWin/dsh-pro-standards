@@ -43,15 +43,23 @@ AI 助手最容易出的问题，往往不是「不会写」，而是「不看�
 | DSH（DeepSeek Harness） | `~/.dsh/skills/`（跨运行时别名 `~/.agents/skills/`） |
 
 ```bash
-git clone https://github.com/你的用户名/dsh-pro-standards.git
+git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 mkdir -p ~/.dsh/skills/dsh-pro-standards
 cp -r dsh-pro-standards/SKILL.md dsh-pro-standards/references ~/.dsh/skills/dsh-pro-standards/
 ```
 
 ```powershell
-git clone https://github.com/你的用户名/dsh-pro-standards.git
+git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 New-Item -ItemType Directory -Force "$HOME\.dsh\skills\dsh-pro-standards" | Out-Null
 Copy-Item -Recurse .\dsh-pro-standards\SKILL.md, .\dsh-pro-standards\references "$HOME\.dsh\skills\dsh-pro-standards"
+```
+
+也可以从 npm 取文件（这一步只拿到文件，仍需放进技能目录）：
+
+```bash
+npm install dsh-pro-standards
+mkdir -p ~/.dsh/skills/dsh-pro-standards
+cp -r node_modules/dsh-pro-standards/SKILL.md node_modules/dsh-pro-standards/references ~/.dsh/skills/dsh-pro-standards/
 ```
 
 建议目录名与 `SKILL.md` 里的 `name` 字段保持一致（`dsh-pro-standards`）：运行时是按 frontmatter 的 `name` 识别技能的，目录同名只是方便对照、不容易弄错。
@@ -82,6 +90,7 @@ dsh-pro-standards/
 ├── README.md                # 中文说明（本文件）
 ├── README.en.md             # English README
 ├── CHANGELOG.md             # 版本变更记录
+├── package.json             # npm 包配置
 ├── LICENSE                  # MIT
 ├── .gitignore               # 忽略 backups/ 等本地文件
 └── .gitattributes           # 统一 LF 换行
