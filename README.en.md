@@ -48,7 +48,7 @@ It can also be installed from the DSH plugin manager UI. Afterwards `dsh-pro-sta
 
 **Option 2: copy only the skill (no plugin)**
 
-Same skill, no plugin manifest or icon:
+Same skill, no plugin manifest or icon. **Pick one of the two options** — installing both yields two skills with the same name.
 
 ```bash
 git clone https://github.com/WhichWitchWin/dsh-pro-standards.git

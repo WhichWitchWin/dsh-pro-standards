@@ -48,7 +48,7 @@ dsh plugin --profile <你的 profile 名> add dsh-pro-standards
 
 **方式二：只复制技能（不装插件）**
 
-效果一样能用，只是没有插件清单和图标：
+效果一样能用，只是没有插件清单和图标。**与方式一二者择一**——两种都装会出现同名两份技能。
 
 ```bash
 git clone https://github.com/WhichWitchWin/dsh-pro-standards.git

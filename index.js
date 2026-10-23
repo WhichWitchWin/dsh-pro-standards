@@ -35,8 +35,9 @@ const SKILL_SOURCE = 'bundled'
  * @param config - 可选配置；每个键都有代码内默认值，可以不传。
  */
 export function apply(ctx, config = {}) {
+  const settings = config ?? {}
   const logger = createLogger(ctx)
-  const skillsDir = resolveSkillsDir(config)
+  const skillsDir = resolveSkillsDir(settings, logger)
 
   if (skillsDir === undefined) {
     logger.warn(
@@ -162,26 +163,31 @@ function firstLine(content) {
 }
 
 /**
- * 解析技能根目录，返回第一个像样的候选：
+ * 解析技能根目录。显式配置（config / 环境变量）指向的不是技能根目录时先告警，
+ * 再按内置候选继续：
  *
  *   1. `config.skillsDir`（显式指定）
  *   2. `DSH_PRO_STANDARDS_SKILLS_DIR` 环境变量
  *   3. `<包目录>/skills` —— 正常路径
  *   4. `<包目录>/../skills` —— 仓库内检出的情形
  */
-function resolveSkillsDir(config) {
-  const candidates = []
+function resolveSkillsDir(config, logger) {
   const configured = typeof config.skillsDir === 'string' ? config.skillsDir.trim() : ''
   if (configured !== '') {
-    candidates.push(isAbsolute(configured) ? configured : resolve(configured))
+    const resolved = isAbsolute(configured) ? configured : resolve(configured)
+    if (looksLikeSkillsDir(resolved)) return resolved
+    logger.warn(
+      `配置的 skillsDir 不是技能根目录（缺少 <技能名>/${SKILL_FILE}）：${resolved}，改为自动解析。`,
+    )
   }
   const fromEnv = (process.env[SKILLS_DIR_ENV] ?? '').trim()
   if (fromEnv !== '') {
-    candidates.push(isAbsolute(fromEnv) ? fromEnv : resolve(fromEnv))
+    const resolved = isAbsolute(fromEnv) ? fromEnv : resolve(fromEnv)
+    if (looksLikeSkillsDir(resolved)) return resolved
+    logger.warn(`环境变量 ${SKILLS_DIR_ENV} 指向的不是技能根目录：${resolved}，改为自动解析。`)
   }
-  candidates.push(join(PLUGIN_DIR, 'skills'))
-  candidates.push(resolve(PLUGIN_DIR, '..', 'skills'))
-  return candidates.find((candidate) => looksLikeSkillsDir(candidate))
+  return [join(PLUGIN_DIR, 'skills'), resolve(PLUGIN_DIR, '..', 'skills')]
+    .find((candidate) => looksLikeSkillsDir(candidate))
 }
 
 /** `dir` 是否像一个技能根目录。 */
