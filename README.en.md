@@ -81,7 +81,7 @@ dsh-pro-standards/
 │   └── standards.md         # On-demand detail: rules, examples, counter-examples
 ├── README.md                # 中文说明
 ├── README.en.md             # English README (this file)
-├── 更新说明.md              # Release notes
+├── CHANGELOG.md             # Release notes
 ├── LICENSE                  # MIT
 ├── .gitignore               # Ignores backups/ and other local files
 └── .gitattributes           # Keeps line endings at LF

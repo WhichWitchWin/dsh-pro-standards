@@ -81,7 +81,7 @@ dsh-pro-standards/
 │   └── standards.md         # 按需细则：判断细则、示例、反例
 ├── README.md                # 中文说明（本文件）
 ├── README.en.md             # English README
-├── 更新说明.md              # 版本变更记录
+├── CHANGELOG.md             # 版本变更记录
 ├── LICENSE                  # MIT
 ├── .gitignore               # 忽略 backups/ 等本地文件
 └── .gitattributes           # 统一 LF 换行
