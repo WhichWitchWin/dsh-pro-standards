@@ -54,7 +54,7 @@ git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 dsh plugin --profile <你的 profile 名> add link:C:\你的路径\dsh-pro-standards
 ```
 
-**发布到 npm 之后**（届时可按包名直装）：
+**从 npm 安装**（已发布 `0.1.0`，最省事）：
 
 ```bash
 dsh plugin --profile <你的 profile 名> add dsh-pro-standards

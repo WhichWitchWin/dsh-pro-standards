@@ -54,7 +54,7 @@ git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
 dsh plugin --profile <your profile> add link:C:\your\path\dsh-pro-standards
 ```
 
-**Once published to npm** (install by package name):
+**Install from npm** (`0.1.0` is published — the easiest route):
 
 ```bash
 dsh plugin --profile <your profile> add dsh-pro-standards
