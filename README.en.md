@@ -38,13 +38,29 @@ When genuinely unsure, the skill asks you rather than guessing.
 
 **Option 1: install it as a DSH bundle (recommended)**
 
-`package.json` declares `dsh.bundle.patch`, so installing it mounts `index.js`, which registers the bundled `skills/` tree into dsh's skill catalog. No manual copying:
+`package.json` declares `dsh.bundle.patch`, so installing it mounts `index.js`, which registers the bundled `skills/` tree into dsh's skill catalog. No manual copying needed.
+
+**Install from GitHub (works today)** — clone it, then install the cloned directory as a local package:
+
+```bash
+git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
+dsh plugin --profile <your profile> add link:./dsh-pro-standards
+```
+
+Windows PowerShell (an absolute path is more reliable):
+
+```powershell
+git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
+dsh plugin --profile <your profile> add link:C:\your\path\dsh-pro-standards
+```
+
+**Once published to npm** (install by package name):
 
 ```bash
 dsh plugin --profile <your profile> add dsh-pro-standards
 ```
 
-It can also be installed from the DSH plugin manager UI. Afterwards `dsh-pro-standards` shows up in the skill list, with its title, description and icon visible in the plugin details.
+After installing, `dsh-pro-standards` shows up in the skill list, with its title, description and icon visible in the plugin details. Edits to `index.js` are not hot-reloaded — disable and re-enable the plugin to apply them.
 
 **Option 2: copy only the skill (no plugin)**
 

@@ -38,13 +38,29 @@ AI 助手最容易出的问题，往往不是「不会写」，而是「不看�
 
 **方式一：作为 DSH 插件包安装（推荐）**
 
-`package.json` 里声明了 `dsh.bundle.patch`，安装后自动挂载 `index.js`，把自带的 `skills/` 注册进 dsh 的技能目录，不需要手动复制：
+`package.json` 里声明了 `dsh.bundle.patch`，安装后自动挂载 `index.js`，把自带的 `skills/` 注册进 dsh 的技能目录，不需要手动复制。
+
+**从 GitHub 安装（现在就能用）**——先克隆，再把克隆下来的目录作为本地包装进去：
+
+```bash
+git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
+dsh plugin --profile <你的 profile 名> add link:./dsh-pro-standards
+```
+
+Windows PowerShell（路径用绝对路径更稳）：
+
+```powershell
+git clone https://github.com/WhichWitchWin/dsh-pro-standards.git
+dsh plugin --profile <你的 profile 名> add link:C:\你的路径\dsh-pro-standards
+```
+
+**发布到 npm 之后**（届时可按包名直装）：
 
 ```bash
 dsh plugin --profile <你的 profile 名> add dsh-pro-standards
 ```
 
-也可以在 DSH 的插件管理界面里安装。装好后技能列表里会出现 `dsh-pro-standards`，插件详情里能看到标题、描述和图标。
+装好后技能列表里会出现 `dsh-pro-standards`，插件详情里能看到标题、描述和图标。改 `index.js` 后不会热重载，把插件关掉再打开即可生效。
 
 **方式二：只复制技能（不装插件）**
 
